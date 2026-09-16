@@ -26,9 +26,36 @@ export function initializeGitRepository(root, message) {
     throw new Error('destination is already inside a Git worktree');
   }
 
-  run('git', ['config', 'user.name'], { cwd: root, capture: true });
-  run('git', ['config', 'user.email'], { cwd: root, capture: true });
+  assertGitIdentity(root);
   run('git', ['init', '--initial-branch=main'], { cwd: root });
   run('git', ['add', '--all'], { cwd: root });
   run('git', ['commit', '-m', message], { cwd: root });
+}
+
+function assertGitIdentity(root) {
+  const configuredName = run('git', ['config', 'user.name'], {
+    cwd: root,
+    capture: true,
+    allowFailure: true,
+  });
+  const configuredEmail = run('git', ['config', 'user.email'], {
+    cwd: root,
+    capture: true,
+    allowFailure: true,
+  });
+  const environmentIdentity = [
+    'GIT_AUTHOR_NAME',
+    'GIT_AUTHOR_EMAIL',
+    'GIT_COMMITTER_NAME',
+    'GIT_COMMITTER_EMAIL',
+  ].every((key) => process.env[key]);
+
+  if (
+    (configuredName.status !== 0 || configuredEmail.status !== 0) &&
+    !environmentIdentity
+  ) {
+    throw new Error(
+      'configure Git user.name and user.email before creating a project',
+    );
+  }
 }
