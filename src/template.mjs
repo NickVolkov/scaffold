@@ -7,7 +7,6 @@ export const DEFAULT_MANIFEST = {
     'degit.json',
     '.scaffold/**',
     '.scaffold.json',
-    'docs/engineering/**',
     'pnpm-lock.yaml',
   ],
   afterCreate: [],

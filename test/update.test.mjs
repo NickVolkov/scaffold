@@ -42,6 +42,22 @@ test('update refuses to overwrite overlapping project changes', async () => {
   );
 });
 
+test('update applies engineering documentation changes', async () => {
+  const fixture = createFixture();
+  writeFileSync(
+    join(fixture.template, 'docs/engineering/guide.md'),
+    'version two\n',
+  );
+  commitAll(fixture.template, 'update engineering guide');
+
+  await runCli(['update'], fixture.project);
+
+  assert.equal(
+    readFileSync(join(fixture.project, 'docs/engineering/guide.md'), 'utf8'),
+    'version two\n',
+  );
+});
+
 test('update advances scaffold state before running validation hooks', async () => {
   const fixture = createFixture();
   writeFileSync(join(fixture.template, 'template.txt'), 'version two\n');
@@ -73,11 +89,14 @@ function createFixture() {
   const template = join(root, 'template');
   const project = join(root, 'project');
   mkdirSync(join(template, '.scaffold'), { recursive: true });
+  mkdirSync(join(template, 'docs/engineering'), { recursive: true });
   mkdirSync(project);
+  mkdirSync(join(project, 'docs/engineering'), { recursive: true });
   initializeRepository(template);
   initializeRepository(project);
 
   writeFileSync(join(template, 'template.txt'), 'version one\n');
+  writeFileSync(join(template, 'docs/engineering/guide.md'), 'version one\n');
   writeFileSync(
     join(template, '.scaffold/template.json'),
     `${JSON.stringify({ schemaVersion: 1, afterUpdate: [] }, null, 2)}\n`,
@@ -86,6 +105,7 @@ function createFixture() {
   const baseCommit = revParse(template, 'HEAD');
 
   writeFileSync(join(project, 'template.txt'), 'version one\n');
+  writeFileSync(join(project, 'docs/engineering/guide.md'), 'version one\n');
   writeFileSync(
     join(project, '.scaffold.json'),
     `${JSON.stringify(
