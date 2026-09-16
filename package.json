@@ -4,7 +4,7 @@
   "description": "Create and update projects from versioned Git templates",
   "type": "module",
   "bin": {
-    "scaffold": "./bin/scaffold.mjs"
+    "scaffold": "bin/scaffold.mjs"
   },
   "files": [
     "bin",
