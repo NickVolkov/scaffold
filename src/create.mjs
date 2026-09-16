@@ -1,9 +1,11 @@
 import { basename, resolve } from 'node:path';
 import degit from 'degit';
+import { initializeGitRepository } from './git.mjs';
 import { writeState } from './state.mjs';
 import { parseSource, resolveRemoteCommit } from './source.mjs';
 import { readClonedManifest } from './template.mjs';
 import { runShell } from './process.mjs';
+import { restoreSymlinks } from './symlinks.mjs';
 
 export async function createProject({ sourceInput, destinationInput }) {
   const source = parseSource(sourceInput);
@@ -37,6 +39,7 @@ export async function createProject({ sourceInput, destinationInput }) {
   }
 
   const manifest = readClonedManifest(destination);
+  restoreSymlinks(destination, manifest.symlinks);
   writeState(destination, {
     schemaVersion: 1,
     source: source.source,
@@ -49,6 +52,11 @@ export async function createProject({ sourceInput, destinationInput }) {
     console.log(`> ${command}`);
     runShell(command, destination);
   }
+
+  initializeGitRepository(
+    destination,
+    `Initialize project from ${source.source}`,
+  );
 
   console.log(
     `\nCreated ${projectName} from ${source.source}@${commit.slice(0, 7)}`,

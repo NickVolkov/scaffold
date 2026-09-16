@@ -11,6 +11,7 @@ export const DEFAULT_MANIFEST = {
   ],
   afterCreate: [],
   afterUpdate: [],
+  symlinks: {},
 };
 
 export function readClonedManifest(root) {
@@ -44,6 +45,12 @@ export function parseManifest(contents) {
     }
   }
 
+  if (value.symlinks !== undefined && !isStringRecord(value.symlinks)) {
+    throw new Error(
+      'template manifest field symlinks must be an object of string targets',
+    );
+  }
+
   return {
     ...DEFAULT_MANIFEST,
     ...value,
@@ -53,11 +60,21 @@ export function parseManifest(contents) {
         ...(value.excludeFromUpdates ?? []),
       ]),
     ],
+    symlinks: value.symlinks ?? {},
   };
 }
 
 function isStringArray(value) {
   return (
     Array.isArray(value) && value.every((item) => typeof item === 'string')
+  );
+}
+
+function isStringRecord(value) {
+  return (
+    value !== null &&
+    typeof value === 'object' &&
+    !Array.isArray(value) &&
+    Object.values(value).every((item) => typeof item === 'string')
   );
 }

@@ -13,6 +13,14 @@ npx scaffoldrr update --dry-run
 npx scaffoldrr update
 ```
 
+Adopt an existing Git repository without changing its files:
+
+```bash
+npx scaffoldrr init NickVolkov/nest-backend-template
+git add .scaffold.json
+git commit -m "Adopt project scaffold"
+```
+
 `create` clones a GitHub template with Degit and records its source commit in `.scaffold.json`. `update` fetches the template and applies the difference from that recorded commit using Git's three-way merge. It requires a clean working tree and never creates a commit.
 
 ## Template manifest
@@ -23,6 +31,7 @@ A template can define `.scaffold/template.json`:
 {
   "schemaVersion": 1,
   "excludeFromUpdates": ["generated/**"],
+  "symlinks": { "CLAUDE.md": "AGENTS.md" },
   "afterCreate": ["pnpm install"],
   "afterUpdate": ["pnpm install", "pnpm typecheck", "pnpm test"]
 }

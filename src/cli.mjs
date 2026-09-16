@@ -1,9 +1,11 @@
 import { createProject } from './create.mjs';
+import { initProject } from './init.mjs';
 import { applyUpdate, getUpdatePlan, printUpdatePlan } from './update.mjs';
 import { showStatus } from './status.mjs';
 
 const HELP = `Usage:
   scaffold create <owner/repository[#ref]> <destination>
+  scaffold init <owner/repository[#ref]> [--force]
   scaffold status
   scaffold update [--to <ref>] [--dry-run]
 `;
@@ -33,6 +35,12 @@ export async function runCli(args, cwd = process.cwd()) {
     return;
   }
 
+  if (command === 'init') {
+    const options = parseInitOptions(rest);
+    initProject({ cwd, ...options });
+    return;
+  }
+
   if (command === 'update') {
     const options = parseUpdateOptions(rest);
     const plan = getUpdatePlan(cwd, options.targetRef);
@@ -46,6 +54,28 @@ export async function runCli(args, cwd = process.cwd()) {
   }
 
   throw new Error(`unknown command: ${command}\n\n${HELP}`);
+}
+
+function parseInitOptions(args) {
+  const sourceInput = args[0];
+  const remaining = args.slice(1);
+  let force = false;
+
+  if (!sourceInput || sourceInput.startsWith('-')) {
+    throw new Error('usage: scaffold init <owner/repository[#ref]> [--force]');
+  }
+
+  for (const argument of remaining) {
+    if (argument === '--force') {
+      force = true;
+    } else {
+      throw new Error(
+        'usage: scaffold init <owner/repository[#ref]> [--force]',
+      );
+    }
+  }
+
+  return { sourceInput, force };
 }
 
 function parseUpdateOptions(args) {
