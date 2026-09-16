@@ -1,5 +1,5 @@
 {
-  "name": "@nickvolkov/scaffold",
+  "name": "scaffoldrr",
   "version": "0.1.0",
   "description": "Create and update projects from versioned Git templates",
   "type": "module",
