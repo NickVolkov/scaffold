@@ -1,0 +1,38 @@
+lockfileVersion: '9.0'
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
+importers:
+  .:
+    dependencies:
+      degit:
+        specifier: 3.10.0
+        version: 3.10.0
+    devDependencies:
+      prettier:
+        specifier: 3.9.0
+        version: 3.9.0
+
+packages:
+  degit@3.10.0:
+    resolution:
+      {
+        integrity: sha512-xlFPgJs8X/2wnWNsuV6siWVHRd2mSGUNHYkiJLZYa918Ma9rZT/mM3Y2Rz6juwz3tHTkfNAnlX7szD9OLbcYQg==,
+      }
+    engines: { node: '>=20.0.0' }
+    hasBin: true
+
+  prettier@3.9.0:
+    resolution:
+      {
+        integrity: sha512-LjIqSIC5VYLzs9WedVmJ2ljNAGnU+DteIClbahu4L/DBeWjZ6iT/k1lAYyu9JUh+1xINxWadaPw/Pl63y/agAw==,
+      }
+    engines: { node: '>=14' }
+    hasBin: true
+
+snapshots:
+  degit@3.10.0: {}
+
+  prettier@3.9.0: {}

@@ -1,0 +1,36 @@
+{
+  "name": "@nickvolkov/scaffold",
+  "version": "0.1.0",
+  "description": "Create and update projects from versioned Git templates",
+  "type": "module",
+  "bin": {
+    "scaffold": "./bin/scaffold.mjs"
+  },
+  "files": [
+    "bin",
+    "src"
+  ],
+  "scripts": {
+    "format:check": "prettier --check .",
+    "test": "node --test",
+    "check": "pnpm format:check && pnpm test"
+  },
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "packageManager": "pnpm@9.15.0",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NickVolkov/scaffold.git"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "degit": "3.10.0"
+  },
+  "devDependencies": {
+    "prettier": "3.9.0"
+  }
+}
