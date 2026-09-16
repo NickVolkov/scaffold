@@ -5,13 +5,16 @@ Create and update projects from versioned Git templates.
 ## Usage
 
 ```bash
-pnpm dlx @nickvolkov/scaffold create NickVolkov/nest-backend-template my-api
+pnpm dlx github:NickVolkov/scaffold create NickVolkov/nest-backend-template my-api
 cd my-api
 
-pnpm dlx @nickvolkov/scaffold status
-pnpm dlx @nickvolkov/scaffold update --dry-run
-pnpm dlx @nickvolkov/scaffold update
+pnpm dlx github:NickVolkov/scaffold status
+pnpm dlx github:NickVolkov/scaffold update --dry-run
+pnpm dlx github:NickVolkov/scaffold update
 ```
+
+After the package is published to npm, `github:NickVolkov/scaffold` can be
+replaced with `@nickvolkov/scaffold`.
 
 `create` clones a GitHub template with Degit and records its source commit in `.scaffold.json`. `update` fetches the template and applies the difference from that recorded commit using Git's three-way merge. It requires a clean working tree and never creates a commit.
 
